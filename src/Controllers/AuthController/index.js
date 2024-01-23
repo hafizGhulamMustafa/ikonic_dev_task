@@ -8,13 +8,14 @@ const jwtSecret = process.env.JWT_SECRET || "IKONICTASKSECRET";
 const jwtExpiration = process.env.JWT_EXPIRATION || "1h";
 
 exports.signup = (req, res) => {
-  const data = {
-    name: req.body.name,
+  const userData = {
+    email: req.body.email,
+    password: req.body.password,
   };
 
   con.query(
-    "SELECT * FROM sing_up WHERE name = ?",
-    [data.name],
+    "SELECT * FROM sing_up WHERE email = ?",
+    [userData.email],
     (err, result) => {
       if (err) {
         console.error("Database error:", err);
@@ -24,7 +25,7 @@ exports.signup = (req, res) => {
       }
 
       if (!result?.length) {
-        con.query("INSERT INTO sing_up SET ?", data, (error, result) => {
+        con.query("INSERT INTO sing_up SET ?", userData, (error, result) => {
           if (error) {
             console.error("Database error:", error);
             return res
