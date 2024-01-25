@@ -1,6 +1,6 @@
 const { check, validationResult } = require("express-validator");
 
-exports.validateSignInRequest = [
+exports.validateLogInRequest = [
   check("email")
     .notEmpty()
     .withMessage("Email is required for sign-in")

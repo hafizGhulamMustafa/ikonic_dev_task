@@ -1,24 +1,29 @@
 const express = require("express");
-const auth = require("./Routes/AuthRoutes");
-const dbConnection = require("./Database");
-const env = require("dotenv").config();
+const dotenv = require("dotenv");
+const cors = require("cors");
+const sequelize = require("./config/dbConfig");
+const authRoutes = require("./Routes/AuthRoutes");
+
+dotenv.config();
 
 const app = express();
 
-const port = 8000;
-
-dbConnection.connect((error, result) => {
-  if (!result) {
-    console.log(error);
-  } else {
-    console.log("connected");
-  }
-});
-
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use("/api", auth);
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("Connection has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+})();
 
+app.use("/api", authRoutes);
+
+const port = process.env.PORT || 8000;
 app.listen(port, () => {
-  console.log(`prot ${port} is runing`);
+  console.log(`Server is running on port ${port}`);
 });
