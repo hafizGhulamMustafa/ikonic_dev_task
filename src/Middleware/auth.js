@@ -5,7 +5,7 @@ dotenv.config();
 
 const jwtSecret = process.env.JWT_SECRET || "IKONICTASKSECRET";
 
-exports.requireSignIn = (req, res, next) => {
+exports.requireLogIn = (req, res, next) => {
   const authorizationHeader = req.headers.authorization;
 
   if (authorizationHeader) {

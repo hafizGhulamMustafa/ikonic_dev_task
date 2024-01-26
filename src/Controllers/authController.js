@@ -9,7 +9,7 @@ dotenv.config();
 const jwtSecret = process.env.JWT_SECRET || "IKONICTASKSECRET";
 const jwtExpiration = process.env.JWT_EXPIRATION || "1h";
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -20,6 +20,7 @@ exports.login = async (req, res) => {
         .json({ status: "error", message: "Email not found" });
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
+
     if (!passwordMatch) {
       return res
         .status(401)
@@ -47,7 +48,7 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.signup = async (req, res) => {
+const signup = async (req, res) => {
   const { name, email, password } = req.body;
   try {
     const existingUser = await User.findOne({ where: { email: email } });
@@ -84,3 +85,5 @@ exports.signup = async (req, res) => {
       .json({ status: "error", message: "Internal Server Error" });
   }
 };
+
+module.exports = { login, signup };

@@ -2,7 +2,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const sequelize = require("./config/dbConfig");
-const authRoutes = require("./Routes/AuthRoutes");
+const authRoutes = require("./Routes/authRoutes");
+const userRoutes = require("./Routes/userRoutes");
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 })();
 
 app.use("/api", authRoutes);
+app.use("/api/user", userRoutes);
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
